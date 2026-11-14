@@ -9,7 +9,10 @@
     "check:content": "python scripts/check_content.py"
   },
   "dependencies": {
-    "astro": "^5.13.0",
-    "@astrojs/starlight": "^0.35.0"
+    "astro": "7.4.12",
+    "@astrojs/starlight": "0.43.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.1"
   }
 }

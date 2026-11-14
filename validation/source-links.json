@@ -70,7 +70,8 @@
   },
   {
     "url": "https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html",
-    "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)>"
+    "status": 200,
+    "final_url": "https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html"
   },
   {
     "url": "https://docs.nvidia.com/nsight-systems/UserGuide/index.html",
@@ -149,7 +150,8 @@
   },
   {
     "url": "https://docs.pytorch.org/tutorials/recipes/recipes/tuning_guide.html",
-    "error": "<urlopen error _ssl.c:983: The handshake operation timed out>"
+    "status": 200,
+    "final_url": "https://docs.pytorch.org/tutorials/recipes/recipes/tuning_guide.html"
   },
   {
     "url": "https://docs.vllm.ai/en/latest/",

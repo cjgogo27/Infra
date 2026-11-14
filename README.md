@@ -18,7 +18,7 @@
 
 ## 本地阅读与构建
 
-推荐 Node.js 22 LTS、Python 3.11+。在仓库根目录：
+推荐 Node.js 22.12+（或 Node 24）、Python 3.11+。在仓库根目录：
 
 ~~~bash
 npm ci
