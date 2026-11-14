@@ -1,0 +1,15 @@
+---
+title: "Interactive memory and speedup budgets"
+sidebar:
+  order: 2
+---
+
+import Budget from '../../../../components/Budget.astro';
+
+<Budget lang="en" />
+
+## Explain what changes
+
+Increase concurrency from 1 to 8. Weights stay unchanged—what happens to KV memory? Reduce the optimized stage's share from 40% to 10%. How much does a twofold local speedup still help?
+
+Training-state estimates use the explicit 16-byte assumption in Section 1.3. KV estimates use the standard Transformer formula in Section 5.1. Sharding, alternative architectures, quantization, and windowing require adjustments.

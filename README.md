@@ -2,11 +2,11 @@
 
 从零理解训练、推理与部署，面向 Infra 实习准备与工程入门。
 
-📖 **[在线阅读](https://cjgogo27.github.io/Infra/)** · [从零开始](src/content/docs/guides/01-start.md) · [实验](src/content/docs/labs/01-lab.md)
+🌐 **[English](https://cjgogo27.github.io/Infra/en/)** · 顶部语言选择器可切换当前章节的中英文版本。\n\n📖 **[在线阅读](https://cjgogo27.github.io/Infra/)** · [从零开始](src/content/docs/guides/01-start.md) · [实验](src/content/docs/labs/01-lab.md)
 
 ## 内容
 
-- 6 章 24 节正文，34 个内容页面，约 17,207 个中文字符。
+- 6 章 24 节正文，中英文双语，每种语言 34 个内容页面（共 68 页），约 17,207 个中文字符。
 - 系统与显存基础；CT/SFT/RL；数据 IO 与 Checkpoint。
 - DDP/FSDP/ZeRO、Megatron 并行、NCCL 与资源调度。
 - Profiler、Roofline、计算图、CUDA/Triton Kernel。

@@ -1,0 +1,54 @@
+---
+title: LLM and Embodied AI Infrastructure, Explained
+description: From your first memory budget to training, serving, and robot feedback loops.
+template: splash
+hero:
+  title: Understand Infra. Then optimize it.
+  tagline: Learn how large models and embodied AI are trained, served, and deployed. Connect each term to a pipeline you can observe, measure, and improve.
+  actions:
+    - text: Start learning
+      link: /Infra/en/guides/01-start/
+      icon: right-arrow
+    - text: GitHub repository
+      link: https://github.com/cjgogo27/Infra
+      icon: external
+      variant: minimal
+---
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Who this handbook is for
+
+You know Python and are preparing for an Infra internship, but FSDP, NCCL, KV cache, and TensorRT seem to arrive all at once. Build a system map first, then follow training and deployment one mechanism at a time. Prior large-model training experience is not required.
+
+<CardGrid>
+<Card title="Learn from scratch" icon="open-book">Read six chapters and 24 sections in order. Plan roughly 5–8 hours for the text, plus experiments; this is a scheduling estimate. Understand, measure, then optimize.</Card>
+<Card title="Prepare for interviews" icon="pencil">Use the role checklist and four-week route. Explain one project through logs and results.</Card>
+<Card title="Diagnose a failure" icon="magnifier">Start with OOM, idle GPUs, stuck collectives, or tail latency, then find the relevant mechanism.</Card>
+<Card title="No GPU required to begin" icon="laptop">Run CPU benchmarks and checkpoint recovery, and explore interactive budgets. GPU and multi-card exercises state their requirements.</Card>
+</CardGrid>
+
+## How to read each section
+
+Begin with an engineering problem, learn the terms and a plain-language explanation, then examine mechanisms, dependencies, and the LabBot example. Answer the self-check before expanding it. Primary references conclude each section. Teaching numbers are assumptions; measured claims require actual run records.
+
+## Two connected pipelines
+
+Training: data → decoding/sampling → forward → backward → communication → update → checkpoint.
+
+Deployment: observation/request → queue → preprocessing → encoder/model → action head/decode → postprocessing → response/actuation.
+
+LabBot is a fictional tabletop arm connecting general LLM infrastructure to embodied systems. Small experiments verify engineering mechanisms; they do not claim to train a usable robot policy.
+
+## Reading entrances
+
+- [Beginner and four-week route](/Infra/en/guides/01-start/)
+- [Browse by role or failure](/Infra/en/guides/02-routes/)
+- [Interactive memory and speedup calculator](/Infra/en/appendix/calculator/)
+- [Hands-on labs](/Infra/en/labs/01-lab/)
+- [Interview questions and project template](/Infra/en/appendix/interview/)
+
+## Credits and scope
+
+The teaching organization and documentation experience are inspired by [cionHuang's humanoid robotics tutorial](https://cionhuang.github.io/A_Brief_Tutorial_of_Humanoid_Robot/). Both use the open-source Astro/Starlight documentation framework. This handbook's text, examples, code, and interactive material are independently written; it does not reproduce the original book's text/images or imply its author's endorsement.
+
+Technical reference date: 2026-11-14. APIs evolve; consult documentation for your installed versions. Submit corrections with a source or reproduction through [Issues](https://github.com/cjgogo27/Infra/issues). Use the language selector to switch between English and Simplified Chinese while staying on the corresponding page.

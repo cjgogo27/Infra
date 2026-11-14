@@ -1,18 +1,22 @@
-<section class="budget" aria-label="交互预算计算器">
- <h2>算一算：权重、训练状态与 KV</h2>
- <p>以下是教学估算，不是显卡采购建议；不含激活、工作区、通信和碎片。</p>
- <label>参数量（十亿）<input data-p type="number" min="0.01" max="1000" value="7" step="0.1" /></label>
- <label>KV 层数<input data-l type="number" min="1" max="512" value="32" /></label>
- <label>KV 头数<input data-h type="number" min="1" max="512" value="8" /></label>
- <label>每头维度<input data-d type="number" min="1" max="1024" value="128" /></label>
- <label>缓存长度<input data-s type="number" min="1" max="1000000" value="4096" /></label>
- <label>活跃序列数<input data-b type="number" min="1" max="10000" value="1" /></label>
+---
+const english = Astro.props.lang === "en";
+const labels = english ? ["Interactive budget calculator", "Estimate weights, training state, and KV memory", "Teaching estimates, not GPU purchasing advice. Excludes activations, workspaces, communication, and fragmentation.", "Parameters (billions)", "KV layers", "KV heads", "Head dimension", "Cached length", "Active sequences", "Estimate overall speedup", "Stage share of total time (%)", "Stage speedup factor", "Assumes unchanged remaining stages and no new overhead. Measure overlap and queueing in a real pipeline."] : ["交互预算计算器", "算一算：权重、训练状态与 KV", "以下是教学估算，不是显卡采购建议；不含激活、工作区、通信和碎片。", "参数量（十亿）", "KV 层数", "KV 头数", "每头维度", "缓存长度", "活跃序列数", "算一算：局部加速的上限", "该阶段占总时间（%）", "该阶段加速倍数", "假设其它阶段不变、无新增开销；真实流水线需测量重叠与排队。"];
+---
+<section class="budget" aria-label={labels[0]} data-lang={english ? "en" : "zh"}>
+ <h2>{labels[1]}</h2>
+ <p>{labels[2]}</p>
+ <label>{labels[3]}<input data-p type="number" min="0.01" max="1000" value="7" step="0.1" /></label>
+ <label>{labels[4]}<input data-l type="number" min="1" max="512" value="32" /></label>
+ <label>{labels[5]}<input data-h type="number" min="1" max="512" value="8" /></label>
+ <label>{labels[6]}<input data-d type="number" min="1" max="1024" value="128" /></label>
+ <label>{labels[7]}<input data-s type="number" min="1" max="1000000" value="4096" /></label>
+ <label>{labels[8]}<input data-b type="number" min="1" max="10000" value="1" /></label>
  <output data-out aria-live="polite"></output>
- <h2>算一算：局部加速的上限</h2>
- <label>该阶段占总时间（%）<input data-f type="range" min="0" max="100" value="40" /></label>
- <label>该阶段加速倍数<input data-a type="number" min="1" max="100" value="2" step="0.1" /></label>
+ <h2>{labels[9]}</h2>
+ <label>{labels[10]}<input data-f type="range" min="0" max="100" value="40" /></label>
+ <label>{labels[11]}<input data-a type="number" min="1" max="100" value="2" step="0.1" /></label>
  <output data-speed aria-live="polite"></output>
- <p>假设其它阶段不变、无新增开销；真实流水线需测量重叠与排队。</p>
+ <p>{labels[12]}</p>
 </section>
 <style>
 .budget{border:1px solid var(--sl-color-gray-5);border-radius:12px;padding:1.5rem}
@@ -22,19 +26,22 @@ output{display:block;padding:1rem;background:var(--sl-color-accent-low);border-r
 </style>
 <script>
 document.querySelectorAll('.budget').forEach(root=>{
+ const english = root.getAttribute('data-lang') === 'en';
  const val=(name:string)=>Number((root.querySelector('[data-'+name+']') as HTMLInputElement).value);
  const update=()=>{
   const inputs=Array.from(root.querySelectorAll('input'));
   if(inputs.some(x=>!x.value||!x.checkValidity())) {
-   root.querySelector('[data-out]')!.textContent='请输入范围内的有效数值。';
-   root.querySelector('[data-speed]')!.textContent='请检查输入。';return;
+   root.querySelector('[data-out]')!.textContent=english ? 'Enter valid values within the allowed ranges.' : '请输入范围内的有效数值。';
+   root.querySelector('[data-speed]')!.textContent=english ? 'Please check your inputs.' : '请检查输入。';return;
   }
   const p=val('p'),kv=2*val('l')*val('h')*val('d')*val('s')*val('b')*2/2**30;
   root.querySelector('[data-out]')!.textContent=
-   'BF16 权重：'+(p*1e9*2/2**30).toFixed(2)+' GiB；示例 Adam 持久状态（16 字节/参数）：'+(p*1e9*16/2**30).toFixed(2)+' GiB；标准 BF16 KV：'+kv.toFixed(2)+' GiB。';
+   (english ? 'BF16 weights: ' : 'BF16 权重：')+(p*1e9*2/2**30).toFixed(2)+(english ? ' GiB; example Adam persistent state (16 bytes/parameter): ' : ' GiB；示例 Adam 持久状态（16 字节/参数）：')+(p*1e9*16/2**30).toFixed(2)+(english ? ' GiB; standard BF16 KV: ' : ' GiB；标准 BF16 KV：')+kv.toFixed(2)+' GiB.';
   const f=val('f')/100,speed=1/(1-f+f/val('a'));
   root.querySelector('[data-speed]')!.textContent=
-   '阶段占比 '+val('f')+'%，局部加速 '+val('a')+' 倍 → 整体约 '+speed.toFixed(2)+' 倍，耗时减少 '+((1-1/speed)*100).toFixed(1)+'%。';
+   english
+   ? 'Stage share '+val('f')+'%, local speedup '+val('a')+'x → overall '+speed.toFixed(2)+'x, time reduced by '+((1-1/speed)*100).toFixed(1)+'%.'
+   : '阶段占比 '+val('f')+'%，局部加速 '+val('a')+' 倍 → 整体约 '+speed.toFixed(2)+' 倍，耗时减少 '+((1-1/speed)*100).toFixed(1)+'%。';
  };
  root.addEventListener('input',update);update();
 });
