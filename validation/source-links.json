@@ -1,0 +1,220 @@
+[
+  {
+    "url": "https://arxiv.org/abs/1910.02054",
+    "status": 200,
+    "final_url": "https://arxiv.org/abs/1910.02054"
+  },
+  {
+    "url": "https://arxiv.org/abs/2106.09685",
+    "status": 200,
+    "final_url": "https://arxiv.org/abs/2106.09685"
+  },
+  {
+    "url": "https://arxiv.org/abs/2205.14135",
+    "status": 200,
+    "final_url": "https://arxiv.org/abs/2205.14135"
+  },
+  {
+    "url": "https://arxiv.org/abs/2306.00978",
+    "status": 200,
+    "final_url": "https://arxiv.org/abs/2306.00978"
+  },
+  {
+    "url": "https://arxiv.org/abs/2309.06180",
+    "status": 200,
+    "final_url": "https://arxiv.org/abs/2309.06180"
+  },
+  {
+    "url": "https://cionhuang.github.io/A_Brief_Tutorial_of_Humanoid_Robot/",
+    "status": 200,
+    "final_url": "https://cionhuang.github.io/A_Brief_Tutorial_of_Humanoid_Robot/"
+  },
+  {
+    "url": "https://diffusion-policy.cs.columbia.edu/",
+    "status": 200,
+    "final_url": "https://diffusion-policy.cs.columbia.edu/"
+  },
+  {
+    "url": "https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html",
+    "status": 200,
+    "final_url": "https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html"
+  },
+  {
+    "url": "https://docs.nvidia.com/cuda/cuda-programming-guide/",
+    "error": "The read operation timed out"
+  },
+  {
+    "url": "https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html",
+    "status": 200,
+    "final_url": "https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html"
+  },
+  {
+    "url": "https://docs.nvidia.com/deeplearning/tensorrt/latest/",
+    "status": 200,
+    "final_url": "https://docs.nvidia.com/deeplearning/tensorrt/latest/"
+  },
+  {
+    "url": "https://docs.nvidia.com/deeplearning/tensorrt/latest/inference-library/work-quantized-types.html",
+    "status": 200,
+    "final_url": "https://docs.nvidia.com/deeplearning/tensorrt/latest/inference-library/work-with-quantized-types.html"
+  },
+  {
+    "url": "https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/index.html",
+    "status": 200,
+    "final_url": "https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/index.html"
+  },
+  {
+    "url": "https://docs.nvidia.com/megatron-core/developer-guide/latest/user-guide/index.html",
+    "status": 200,
+    "final_url": "https://docs.nvidia.com/megatron-core/developer-guide/latest/user-guide/index.html"
+  },
+  {
+    "url": "https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html",
+    "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)>"
+  },
+  {
+    "url": "https://docs.nvidia.com/nsight-systems/UserGuide/index.html",
+    "status": 200,
+    "final_url": "https://docs.nvidia.com/nsight-systems/UserGuide/index.html"
+  },
+  {
+    "url": "https://docs.pytorch.org/docs/stable/checkpoint.html",
+    "status": 200,
+    "final_url": "https://docs.pytorch.org/docs/stable/checkpoint.html"
+  },
+  {
+    "url": "https://docs.pytorch.org/docs/stable/data.html",
+    "status": 200,
+    "final_url": "https://docs.pytorch.org/docs/stable/data.html"
+  },
+  {
+    "url": "https://docs.pytorch.org/docs/stable/distributed.checkpoint.html",
+    "status": 200,
+    "final_url": "https://docs.pytorch.org/docs/stable/distributed.checkpoint.html"
+  },
+  {
+    "url": "https://docs.pytorch.org/docs/stable/notes/amp_examples.html",
+    "status": 200,
+    "final_url": "https://docs.pytorch.org/docs/stable/notes/amp_examples.html"
+  },
+  {
+    "url": "https://docs.pytorch.org/docs/stable/notes/autograd.html",
+    "status": 200,
+    "final_url": "https://docs.pytorch.org/docs/stable/notes/autograd.html"
+  },
+  {
+    "url": "https://docs.pytorch.org/docs/stable/notes/cuda.html",
+    "status": 200,
+    "final_url": "https://docs.pytorch.org/docs/stable/notes/cuda.html"
+  },
+  {
+    "url": "https://docs.pytorch.org/docs/stable/notes/ddp.html",
+    "status": 200,
+    "final_url": "https://docs.pytorch.org/docs/stable/notes/ddp.html"
+  },
+  {
+    "url": "https://docs.pytorch.org/docs/stable/onnx.html",
+    "status": 200,
+    "final_url": "https://docs.pytorch.org/docs/stable/onnx.html"
+  },
+  {
+    "url": "https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html",
+    "status": 200,
+    "final_url": "https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html"
+  },
+  {
+    "url": "https://docs.pytorch.org/tutorials/intermediate/FSDP_tutorial.html",
+    "status": 200,
+    "final_url": "https://docs.pytorch.org/tutorials/intermediate/FSDP_tutorial.html"
+  },
+  {
+    "url": "https://docs.pytorch.org/tutorials/intermediate/ddp_tutorial.html",
+    "status": 200,
+    "final_url": "https://docs.pytorch.org/tutorials/intermediate/ddp_tutorial.html"
+  },
+  {
+    "url": "https://docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html",
+    "status": 200,
+    "final_url": "https://docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html"
+  },
+  {
+    "url": "https://docs.pytorch.org/tutorials/intermediate/torch_compile_tutorial.html",
+    "status": 200,
+    "final_url": "https://docs.pytorch.org/tutorials/intermediate/torch_compile_tutorial.html"
+  },
+  {
+    "url": "https://docs.pytorch.org/tutorials/recipes/recipes/profiler_recipe.html",
+    "status": 200,
+    "final_url": "https://docs.pytorch.org/tutorials/recipes/recipes/profiler_recipe.html"
+  },
+  {
+    "url": "https://docs.pytorch.org/tutorials/recipes/recipes/tuning_guide.html",
+    "error": "<urlopen error _ssl.c:983: The handshake operation timed out>"
+  },
+  {
+    "url": "https://docs.vllm.ai/en/latest/",
+    "status": 200,
+    "final_url": "https://docs.vllm.ai/en/latest/"
+  },
+  {
+    "url": "https://docs.vllm.ai/en/latest/benchmarking/",
+    "status": 200,
+    "final_url": "https://docs.vllm.ai/en/latest/benchmarking/"
+  },
+  {
+    "url": "https://github.com/NVIDIA/nccl-tests",
+    "error": "The read operation timed out"
+  },
+  {
+    "url": "https://github.com/cjgogo27/Infra",
+    "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)>"
+  },
+  {
+    "url": "https://github.com/cjgogo27/Infra/issues",
+    "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)>"
+  },
+  {
+    "url": "https://huggingface.co/docs/lerobot/index",
+    "status": 200,
+    "final_url": "https://huggingface.co/docs/lerobot/index"
+  },
+  {
+    "url": "https://huggingface.co/docs/lerobot/lerobot-dataset-v3",
+    "status": 200,
+    "final_url": "https://huggingface.co/docs/lerobot/lerobot-dataset-v3"
+  },
+  {
+    "url": "https://isaac-sim.github.io/IsaacLab/main/index.html",
+    "status": 200,
+    "final_url": "https://isaac-sim.github.io/IsaacLab/main/index.html"
+  },
+  {
+    "url": "https://nvidia.github.io/TensorRT-LLM/",
+    "status": 200,
+    "final_url": "https://nvidia.github.io/TensorRT-LLM/"
+  },
+  {
+    "url": "https://openvla.github.io/",
+    "status": 200,
+    "final_url": "https://openvla.github.io/"
+  },
+  {
+    "url": "https://pytorch.org/get-started/locally/",
+    "error": "<urlopen error _ssl.c:983: The handshake operation timed out>"
+  },
+  {
+    "url": "https://tonyzhaozh.github.io/aloha/",
+    "status": 200,
+    "final_url": "https://tonyzhaozh.github.io/aloha/"
+  },
+  {
+    "url": "https://triton-lang.org/main/getting-started/tutorials/index.html",
+    "status": 200,
+    "final_url": "https://triton-lang.org/main/getting-started/tutorials/index.html"
+  },
+  {
+    "url": "https://verl.readthedocs.io/en/latest/",
+    "status": 200,
+    "final_url": "https://verl.readthedocs.io/en/latest/"
+  }
+]

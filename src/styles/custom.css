@@ -1,0 +1,7 @@
+:root { --sl-color-accent-low:#092f35; --sl-color-accent:#16828b; --sl-color-accent-high:#a3e7de; }
+:root[data-theme='light'] { --sl-color-accent-low:#d9f3ef; --sl-color-accent:#087078; --sl-color-accent-high:#124c50; }
+.sl-markdown-content { line-height:1.9; }
+.sl-markdown-content blockquote { border-inline-start:3px solid var(--sl-color-accent); background:var(--sl-color-accent-low); padding:1rem 1.3rem; border-radius:0 8px 8px 0; }
+.sl-markdown-content details { border:1px solid var(--sl-color-gray-5); padding:.8rem 1rem; border-radius:8px; }
+.sl-markdown-content summary { cursor:pointer; font-weight:600; }
+.hero h1 { max-width:16ch; }

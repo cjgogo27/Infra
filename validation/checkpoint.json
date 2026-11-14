@@ -1,0 +1,13 @@
+{
+  "scope": "deterministic CPU synthetic training, fresh model/optimizer objects",
+  "resume_step": 5,
+  "continuation_steps": 3,
+  "losses_match": true,
+  "parameters_exactly_match": true,
+  "losses": [
+    0.9825146198272705,
+    0.7144767642021179,
+    0.5808693170547485
+  ],
+  "torch": "2.11.0+cpu"
+}

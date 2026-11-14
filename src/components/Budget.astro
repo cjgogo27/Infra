@@ -1,0 +1,41 @@
+<section class="budget" aria-label="交互预算计算器">
+ <h2>算一算：权重、训练状态与 KV</h2>
+ <p>以下是教学估算，不是显卡采购建议；不含激活、工作区、通信和碎片。</p>
+ <label>参数量（十亿）<input data-p type="number" min="0.01" max="1000" value="7" step="0.1" /></label>
+ <label>KV 层数<input data-l type="number" min="1" max="512" value="32" /></label>
+ <label>KV 头数<input data-h type="number" min="1" max="512" value="8" /></label>
+ <label>每头维度<input data-d type="number" min="1" max="1024" value="128" /></label>
+ <label>缓存长度<input data-s type="number" min="1" max="1000000" value="4096" /></label>
+ <label>活跃序列数<input data-b type="number" min="1" max="10000" value="1" /></label>
+ <output data-out aria-live="polite"></output>
+ <h2>算一算：局部加速的上限</h2>
+ <label>该阶段占总时间（%）<input data-f type="range" min="0" max="100" value="40" /></label>
+ <label>该阶段加速倍数<input data-a type="number" min="1" max="100" value="2" step="0.1" /></label>
+ <output data-speed aria-live="polite"></output>
+ <p>假设其它阶段不变、无新增开销；真实流水线需测量重叠与排队。</p>
+</section>
+<style>
+.budget{border:1px solid var(--sl-color-gray-5);border-radius:12px;padding:1.5rem}
+label{display:grid;grid-template-columns:1fr 120px;gap:1rem;margin:.8rem 0}
+input{width:100%;padding:.4rem;border:1px solid var(--sl-color-gray-4);border-radius:5px;color:var(--sl-color-text);background:var(--sl-color-bg)}
+output{display:block;padding:1rem;background:var(--sl-color-accent-low);border-radius:8px;margin-top:1rem;line-height:1.8}
+</style>
+<script>
+document.querySelectorAll('.budget').forEach(root=>{
+ const val=(name:string)=>Number((root.querySelector('[data-'+name+']') as HTMLInputElement).value);
+ const update=()=>{
+  const inputs=Array.from(root.querySelectorAll('input'));
+  if(inputs.some(x=>!x.value||!x.checkValidity())) {
+   root.querySelector('[data-out]')!.textContent='请输入范围内的有效数值。';
+   root.querySelector('[data-speed]')!.textContent='请检查输入。';return;
+  }
+  const p=val('p'),kv=2*val('l')*val('h')*val('d')*val('s')*val('b')*2/2**30;
+  root.querySelector('[data-out]')!.textContent=
+   'BF16 权重：'+(p*1e9*2/2**30).toFixed(2)+' GiB；示例 Adam 持久状态（16 字节/参数）：'+(p*1e9*16/2**30).toFixed(2)+' GiB；标准 BF16 KV：'+kv.toFixed(2)+' GiB。';
+  const f=val('f')/100,speed=1/(1-f+f/val('a'));
+  root.querySelector('[data-speed]')!.textContent=
+   '阶段占比 '+val('f')+'%，局部加速 '+val('a')+' 倍 → 整体约 '+speed.toFixed(2)+' 倍，耗时减少 '+((1-1/speed)*100).toFixed(1)+'%。';
+ };
+ root.addEventListener('input',update);update();
+});
+</script>
