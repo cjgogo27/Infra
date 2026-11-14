@@ -23,6 +23,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: npm ci
+      - run: python scripts/check_lab_contracts.py
       - run: npm run check:content
       - run: node scripts/check_calculator.mjs
       - run: npm run build

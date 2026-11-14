@@ -1,44 +1,119 @@
 ---
-title: "Interview self-check and project template"
+title: "Interviews: progressive cases, code, and project evidence"
 sidebar:
   order: 3
 ---
 
-## Answer in your own words
+## How to use these questions
 
-| Question | Important points |
+The three cases are teaching scenarios, not production incidents. Read the initial evidence, explain what you would request next, then reveal more. The goal is a defensible diagnostic process, not guessing the answer immediately.
+
+## Case 1: low GPU utilization
+
+Initial evidence: utilization is approximately 30%; a colleague proposes doubling DataLoader workers.
+
+Ask about environment, input distribution, and timing boundaries. What evidence would justify changing workers?
+
+<details>
+<summary>Additional evidence and follow-up</summary>
+
+The complete input path takes 120 ms/step; same-shaped resident GPU tensors take 40 ms. The real path waits before forward. These numbers are assumptions for this question.
+
+Can you conclude that the disk is slow? Choose one next control.
+
+Suggested reasoning: verify comparable compute/shapes, then suspect upstream supply without yet distinguishing reading, decoding, augmentation, or transfer. Add an in-memory-sample control retaining preprocessing/transfers and mark stages. Workers also consume RAM and scheduling resources. Validate with unprofiled end-to-end throughput and preserved quality.
+
+</details>
+
+## Case 2: long-sequence OOM
+
+Initial evidence: short sequences train; long sequences fail on the first step. empty_cache does not help.
+
+What memory, shape, and execution-stage information do you request? Why not immediately add data-parallel replicas?
+
+<details>
+<summary>Additional evidence and follow-up</summary>
+
+Weights and optimizer settings are unchanged. The peak occurs around backward, and a smaller microbatch works. Obtain actual allocated/reserved memory, live-tensor information, and peak timing rather than inventing numbers.
+
+Would you first try recomputation, FSDP, or cache clearing? How would you validate the choice?
+
+Suggested reasoning: activation pressure becomes a priority hypothesis, not a proven diagnosis; workspaces and retained references remain alternatives. Establish a smaller-microbatch baseline and separately evaluate recomputation's memory/time cost. Consider sharding if persistent state dominates. DDP replicates model state. Compare fixed effective batch with correct loss weighting and quality checks.
+
+</details>
+
+## Case 3: NCCL timeout
+
+Initial evidence: rank zero reports a timeout; rank one's logs have not been examined.
+
+What do you inspect first? Would you immediately increase the timeout?
+
+<details>
+<summary>Additional evidence and follow-up</summary>
+
+Rank one encountered an earlier sample-shape error and exited; rank zero subsequently waited in a collective.
+
+Why does an NCCL error not necessarily establish a network fault? What constitutes a fix?
+
+Suggested reasoning: ordering suggests a secondary timeout. Preserve earliest per-rank errors and input summaries, repair the data contract/error propagation, and verify batch counts and collective order. A controlled bad-sample test should produce a clear error and terminate all processes; valid data should finish with matching parameters. Persistent timeouts then justify topology, collective-baseline, and network investigation. This scenario does not rule out all network faults.
+
+</details>
+
+## Code question 1: is this GPU execution time?
+
+Assume model and x are already on CUDA:
+
+~~~python
+start = time.perf_counter()
+y = model(x)
+elapsed = time.perf_counter() - start
+print(elapsed)
+~~~
+
+Explain asynchrony and choose either a device interval or a complete call boundary.
+
+<details>
+<summary>Answer criteria</summary>
+
+This can mostly measure submission. Warm up, synchronize before/after a complete wall-time interval, and repeat measurements. Move input preparation outside only if excluded from the intended scope. Correctly recorded/synchronized CUDA Events can measure device intervals. Synchronizing after every operator changes overlap. Lab A's serialized timing is not maximum online serving throughput.
+
+</details>
+
+## Code question 2: independent updates were intended
+
+~~~python
+for x, target in loader:
+    loss = loss_fn(model(x), target)
+    loss.backward()
+    optimizer.step()
+~~~
+
+<details>
+<summary>Answer and follow-up</summary>
+
+Clear gradients before each independent update using optimizer.zero_grad; gradients accumulate by default. Clearing gradients does not zero model weights.
+
+For intentional accumulation, define windows and valid-element weighting, clear at window start, backpropagate multiple microbatches, and step at the end. Handle partial windows correctly. Verify against the full-batch objective in [Lab E](/Infra/en/labs/05-accumulation/), rather than memorizing division by the planned accumulation count.
+
+</details>
+
+## Scoring
+
+Score each of three cases and two code questions from 0 to 3, for 15 points total:
+
+| Score | Evidence of understanding |
 | --- | --- |
-| How do you diagnose low GPU utilization? | Timeline, data supply, CPU, copies, synchronization, isolated baselines |
-| Is a larger batch always better? | Throughput, memory, latency, and convergence |
-| How do DDP and FSDP differ? | Replicas versus sharded state, communication timing, peaks |
-| Does TP=4 multiply effective batch by four? | No; the cards cooperate on the same samples |
-| How do you address OOM? | Identify live state, activations, or workspace before choosing a remedy |
-| Does empty_cache fix every OOM? | No; it cannot release referenced live tensors |
-| How do you time CUDA? | Asynchrony, boundary synchronization, Events, warm-up, measurement scope |
-| How do you identify communication bottlenecks? | Rank consistency, topology baseline, timeline, exposed communication |
-| Why are weights insufficient for recovery? | Optimizer, scheduler, RNG, sampling position, versions |
-| Why may quantization not accelerate inference? | Kernels, dequantization, hardware, actual bottleneck |
-| How do prefill and decode differ? | Parallel prompt processing versus iterative generation; caches and workloads |
-| What is distinctive about VLA optimization? | Vision, action heads, timestamps, observation age, action semantics |
-| How is RL training organized? | Rollout, rewards/environments, updates, weight sync, policy lag |
-| What makes an optimization credible? | Controlled baseline, correctness threshold, raw results, limitations |
+| 0 | Cannot explain the issue, or ignores correctness while claiming speed |
+| 1 | Lists relevant terms/causes without priorities or evidence |
+| 2 | Proposes a plausible hypothesis, requests evidence, and designs an isolating control |
+| 3 | Also states alternative explanations, correctness criteria, acceptance, and limits |
 
-## A three-minute project explanation
+This identifies study gaps; it does not predict interview outcomes. A short answer should still explain how its hypothesis will be tested.
 
-“On [hardware, versions, model, inputs], I observed [specific problem]. Using [logs/trace/control experiment], I located [bottleneck]. I changed only [mechanism], compared against the baseline, and obtained [measured metrics, sample count, quality]. The cost was [memory/compilation/quality/maintenance], and it did not help under [conditions].”
+## Three-minute project narrative
 
-Fill brackets from actual records. Write “not measured” where appropriate. Teaching assumptions are not personal résumé achievements.
+“On [hardware, versions, model, inputs], I observed [problem]. [Logs/trace/control] identified [bottleneck]. Changing only [mechanism] produced [measured result and variation] while meeting [correctness threshold]. The cost was [trade-off], and [conditions] remain untested.”
 
-## Reusable report structure
+Retain environment/commands, baseline, raw data, correctness checks, one change, results, negative findings, and limitations. Write “not measured” when appropriate. Reading, execution, and independent optimization differ; synthetic CPU work is not large-scale training or robot acceleration.
 
-1. Problem and quality threshold: model, inputs, intended use, acceptable error.
-2. Environment: hardware, OS, driver, CUDA, PyTorch, backend versions, commit.
-3. Baseline: commands, warm-up, repetitions, p50/p95, throughput, peak memory.
-4. Evidence: timeline or logs explaining the diagnosis.
-5. Change: one mechanism and why it should help.
-6. Results: raw data, numerical/task correctness, performance comparison.
-7. Limits: untested hardware/inputs, negative results, rollback conditions.
-
-## Choose a manageable next project
-
-Complete one reproducible project rather than listing ten frameworks. Single-GPU vision IO optimization, recoverable training, a small kernel validated across sizes, or policy replay latency can be credible starting points. Distinguish reading about a system, running it, and independently optimizing it.
+Use the [glossary](/Infra/en/appendix/glossary/) for terms and the [four-week route](/Infra/en/guides/01-start/) for a project starting point.

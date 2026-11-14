@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "clock": "monotonic_ms_same_process",
+  "observation_ms": 1000,
+  "now_ms": 1040,
+  "deadline_ms": 100,
+  "image": {
+    "shape": [
+      1,
+      3,
+      32,
+      32
+    ],
+    "dtype": "uint8",
+    "channels": "RGB"
+  },
+  "state": {
+    "joint_order": [
+      "j1",
+      "j2",
+      "j3",
+      "j4",
+      "j5",
+      "j6"
+    ],
+    "unit": "rad",
+    "values": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "action": {
+    "shape": [
+      4,
+      6
+    ],
+    "unit": "rad",
+    "mode": "absolute",
+    "chunk_start_ms": 1040,
+    "step_ms": 20,
+    "values": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.01,
+        0.01,
+        0.01,
+        0.01,
+        0.01,
+        0.01
+      ],
+      [
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02
+      ],
+      [
+        0.03,
+        0.03,
+        0.03,
+        0.03,
+        0.03,
+        0.03
+      ]
+    ]
+  }
+}

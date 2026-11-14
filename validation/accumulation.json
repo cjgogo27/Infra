@@ -1,0 +1,7 @@
+{
+  "full_vs_weighted_max_error": 2.220446049250313e-16,
+  "wrong_mean_max_error": 0.45975763151776916,
+  "tail_window_max_error": 0.0,
+  "dtype": "float64",
+  "scope": "CPU, one output per valid token, no AMP or DDP"
+}

@@ -36,4 +36,4 @@ for source in list(sources.rglob('*.md'))+list(sources.rglob('*.mdx')):
   parser=LanguageParser();parser.feed(htmlfile.read_text(encoding='utf-8'))
   assert parser.lang==language,(htmlfile,parser.lang)
   assert parser.options==expected,(htmlfile,parser.options,expected)
-print('PASS: all 34 page pairs have correct language and matching switch targets')
+print('PASS: all translated page pairs have correct language and matching switch targets')

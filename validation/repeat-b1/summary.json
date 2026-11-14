@@ -1,0 +1,27 @@
+{
+  "scope": "independent subprocess runs; within-run p95 is not between-run uncertainty",
+  "batch": 1,
+  "device": "cpu",
+  "threads": 1,
+  "runs": 3,
+  "throughput_median": 40888.08899626894,
+  "throughput_min": 38740.16969256525,
+  "throughput_max": 42446.623303557084,
+  "per_run": [
+    {
+      "p50_ms": 0.023399999918183312,
+      "p95_ms": 0.02834000024449778,
+      "samples_per_second": 40888.08899626894
+    },
+    {
+      "p50_ms": 0.0228000008064555,
+      "p95_ms": 0.027120002414449118,
+      "samples_per_second": 42446.623303557084
+    },
+    {
+      "p50_ms": 0.02510000194888562,
+      "p95_ms": 0.028619999466172885,
+      "samples_per_second": 38740.16969256525
+    }
+  ]
+}

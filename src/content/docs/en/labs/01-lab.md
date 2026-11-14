@@ -1,35 +1,65 @@
 ---
-title: "Lab A: time inference and compare batches"
+title: "Lab A: measure, repeat, and interpret"
 sidebar:
   order: 1
 ---
 
-## Purpose and environment
+## Prepare and run
 
-Requires Python and PyTorch. CPU is sufficient. CUDA requires a compatible NVIDIA GPU, driver, and PyTorch build. Choose your installation from the [official PyTorch instructions](https://pytorch.org/get-started/locally/), rather than copying hardware-specific commands blindly. See the repository README for the environment actually validated.
-
-Run from the repository root in PowerShell or a Linux shell. No model/data download or robot connection is needed.
+Complete [Lab 0](/Infra/en/labs/00-training/) and read [latency and throughput](/Infra/en/01-foundations/04/). Run from the repository root in a Python environment with PyTorch. CPU is sufficient; no model/data downloads are needed.
 
 ~~~bash
-python labs/benchmark.py --device cpu --batch 1 --output lab-results/b1.json
-python labs/benchmark.py --device cpu --batch 32 --output lab-results/b32.json
+python labs/benchmark.py --device cpu --batch 1 --threads 1 --output lab-results/b1.json
+python labs/benchmark.py --device cpu --batch 32 --threads 1 --output lab-results/b32.json
+python labs/compare_benchmarks.py lab-results/b1.json lab-results/b32.json
 ~~~
 
-With a compatible GPU:
+Fix threads to avoid different default pools between runs. Record versions, device, thread count, shapes, and background load. This is a synthetic 256→512→64 MLP with resident inputs, not a trained VLA.
+
+## Interpret the fields
+
+| Field | Meaning |
+| --- | --- |
+| p50_ms, p95_ms | Whole-call, whole-batch latency percentiles in milliseconds |
+| samples_per_second | Total samples divided by total measured duration |
+| raw_ms | Individual timings saved in JSON |
+| peak_allocated_bytes | Peak CUDA live-tensor allocation; null on CPU, not zero |
+| correctness | Output comparison, not task accuracy |
+
+Throughput = batch×measured calls/total seconds. **Do not estimate measured throughput using batch/p50**: a percentile is not the mean duration. Total time/total samples gives amortized sample cost, not online request latency.
+
+## Interpret existing records
+
+These values come from validation/b1.json and validation/b32.json: Windows, PyTorch 2.11.0+cpu, 14 threads, 20 warm-ups, 100 measurements. They are historical single runs, **not expected results for the one-thread commands above**.
+
+| Batch | p50 ms/batch | p95 ms/batch | Samples/s |
+| --- | --- | --- | --- |
+| 1 | 0.09155 | 0.10931 | 7984.92 |
+| 32 | 0.14520 | 0.19217 | 231469.76 |
+
+Supported conclusion: these records show higher whole-batch percentile latency and higher sample throughput at the larger batch. Unsupported conclusions: faster online responses, the same VLA speedup, or established reproducibility. Tiny CPU calls are sensitive to scheduling and thread pools.
+
+## Repeat in independent processes
+
 ~~~bash
-python labs/benchmark.py --device cuda --batch 8 --trace --output lab-results/gpu.json
+python labs/repeat_benchmark.py --batch 1 --runs 3 --threads 1 --output-dir lab-results/repeat-b1
+python labs/repeat_benchmark.py --batch 32 --runs 3 --threads 1 --output-dir lab-results/repeat-b32
 ~~~
 
-## What to observe
+Inspect individual records and summary.json for between-run variation. Three runs are a beginner exercise, not a significance guarantee. If variation approaches the claimed gain, investigate load, warm-up, and sample count instead of selecting the best run.
 
-Output contains raw timings, p50/p95, throughput, versions, and a correctness check. CUDA additionally reports peak allocated memory, which is not the same as total process memory in nvidia-smi.
+## Optional branches and troubleshooting
 
-After warm-up, each call is timed with synchronization at the boundaries. This is a small MLP with resident inputs, excluding IO, networking, queueing, and a complete policy. Its throughput is not VLA performance, nor is serialized synchronized timing the maximum throughput of an asynchronous service.
+With compatible CUDA, change a single-run command to --device cuda. Boundary synchronization measures serialized wall time, including host overhead, not maximum asynchronous serving throughput. --compile requires a supported backend; compilation is excluded from steady-state timing and cold start must be reported separately.
 
-Compare per-batch latency and amortized per-sample time as batch grows. Repeat configurations independently and record system load. Short CPU timings depend on thread pools and scheduling.
+| Symptom | Action |
+| --- | --- |
+| Script not found | Return to the repository root containing labs |
+| No module named torch | Install PyTorch in the active Python environment |
+| CUDA unavailable | Complete CPU first; verify hardware/build without relabeling CPU data |
+| Unsupported compiler backend | Keep the eager baseline and record the limitation |
+| Numerical assertion fails | Investigate dtype, inputs, and backend before reporting speed |
 
-## Optional compilation and traces
+--trace captures extra calls after timing. Continue to [Lab G](/Infra/en/labs/07-profiler/) for stage-level interpretation.
 
-Add --compile to compare compiled steady-state performance. The platform must support the chosen torch.compile backend. Initial compilation is excluded from timing, not claimed to cost zero. Record unsupported environments rather than inventing results.
-
---trace captures five additional calls after measurement so profiler overhead does not contaminate the benchmark. Open the .json.trace file in a compatible viewer. Local results default to the Git-ignored lab-results directory.
+Pass when you can explain a JSON record, compare configurations, retain all repeats, and identify at least two unsupported conclusions.

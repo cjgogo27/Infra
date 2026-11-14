@@ -7,12 +7,16 @@ p.add_argument('--device',choices=['cpu','cuda'],default='cpu')
 p.add_argument('--batch',type=int,default=8)
 p.add_argument('--steps',type=int,default=100)
 p.add_argument('--warmup',type=int,default=20)
+p.add_argument('--threads',type=int,default=None)
 p.add_argument('--compile',action='store_true')
 p.add_argument('--trace',action='store_true')
 p.add_argument('--output',default='lab-results/benchmark.json')
 a=p.parse_args()
 if a.batch<1 or a.steps<2 or a.warmup<0: p.error('invalid batch/steps/warmup')
 if a.device=='cuda' and not torch.cuda.is_available(): p.error('CUDA unavailable')
+if a.threads is not None:
+    if a.threads < 1: p.error('threads must be positive')
+    torch.set_num_threads(a.threads)
 torch.manual_seed(7)
 d=torch.device(a.device)
 model=nn.Sequential(nn.Linear(256,512),nn.GELU(),nn.Linear(512,64)).to(d).eval()
@@ -34,6 +38,8 @@ with torch.inference_mode():
         candidate(x)
         sync()
         ms.append((time.perf_counter()-start)*1000)
+    # Snapshot before profiling: the benchmark window must end here.
+    peak_allocated = torch.cuda.max_memory_allocated() if d.type=='cuda' else None
     if a.trace:
         activities=[torch.profiler.ProfilerActivity.CPU]
         if d.type=='cuda': activities.append(torch.profiler.ProfilerActivity.CUDA)
@@ -55,7 +61,7 @@ result={
  'batch':a.batch,'steps':a.steps,'warmup':a.warmup,'compiled':a.compile,
  'correctness':'assert_close passed','p50_ms':statistics.median(ms),'p95_ms':p95,
  'samples_per_second':a.batch*len(ms)/(sum(ms)/1000),
- 'peak_allocated_bytes':torch.cuda.max_memory_allocated() if d.type=='cuda' else None,
+ 'peak_allocated_bytes':peak_allocated,
  'raw_ms':ms}
 Path(a.output).parent.mkdir(parents=True,exist_ok=True)
 Path(a.output).write_text(json.dumps(result,indent=2),encoding='utf-8')

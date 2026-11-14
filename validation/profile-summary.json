@@ -1,0 +1,27 @@
+{
+  "scope": "measured CPU profiler capture; inclusive stage costs, not unprofiled latency",
+  "torch": "2.11.0+cpu",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "threads": 1,
+  "iterations": 10,
+  "stages": [
+    {
+      "stage": "prepare_inputs",
+      "calls": 10,
+      "cpu_total_us": 1445.7000000000003,
+      "self_cpu_us": 700.5000000000023
+    },
+    {
+      "stage": "policy_forward",
+      "calls": 10,
+      "cpu_total_us": 1888.5999999999995,
+      "self_cpu_us": 506.39999999999736
+    },
+    {
+      "stage": "postprocess",
+      "calls": 10,
+      "cpu_total_us": 330.8000000000002,
+      "self_cpu_us": 293.90000000000236
+    }
+  ]
+}

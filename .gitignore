@@ -5,3 +5,6 @@ __pycache__/
 *.pt
 *.json.trace
 lab-results/
+.venv-deploy/
+*.onnx
+*.npz
